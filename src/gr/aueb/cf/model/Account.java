@@ -4,9 +4,11 @@ import gr.aueb.cf.exceptions.InsufficientAmountException;
 import gr.aueb.cf.exceptions.InsufficientBalanceException;
 import gr.aueb.cf.exceptions.SsnNotValidException;
 
-import javax.net.ssl.SSLServerSocket;
-
 /**
+ * The {@code Account} class represents a bank account belonging to a user,
+ * identified by a unique International Bank Account Number (IBAN).
+ * It provides methods for depositing and withdrawing money from the account.
+ *
  * @author Ntirintis John
  */
 public class Account extends IdentifiableEntity {
@@ -14,15 +16,25 @@ public class Account extends IdentifiableEntity {
     private String iban;
     private double balance;
 
+    /**
+     * Default constructor initializing an empty account with a new User holder.
+     */
     public Account() {}
 
-    // Overloaded Constructor
+    /**
+     * Overloaded constructor initializing an account with a holder, IBAN and initial balance.
+     *
+     * @param holder the user who holds the account
+     * @param iban the international bank account number of the account
+     * @param balance the initial balance of the account
+     */
     public Account(User holder, String iban, double balance) {
         this.holder = holder;
         this.iban = iban;
         this.balance = balance;
     }
 
+    // Getters / Setters
     public User getHolder() {
         return holder;
     }
@@ -47,6 +59,7 @@ public class Account extends IdentifiableEntity {
         this.balance = balance;
     }
 
+    // Returns a string representation of the account
     @Override
     public String toString() {
         return "Account{" +
@@ -79,13 +92,14 @@ public class Account extends IdentifiableEntity {
     }
 
     /**
+     * Withdraws a given amount from the bank account if the holder's social security number (SSN)
+     * matches the one given and the balance is sufficient.
      *
-     *
-     * @param amount
-     * @param ssn
-     * @throws InsufficientBalanceException
-     * @throws SsnNotValidException
-     * @throws InsufficientAmountException
+     * @param amount the amount to be withdrawn
+     * @param ssn the social security number of the account holder
+     * @throws InsufficientBalanceException if the amount is greater than the current balance
+     * @throws SsnNotValidException if the social security number doesn't match the holder's SSN
+     * @throws InsufficientAmountException if the amount is zero or negative
      */
     public void withdraw(double amount, String ssn)
             throws InsufficientBalanceException, SsnNotValidException, InsufficientAmountException {
@@ -103,6 +117,12 @@ public class Account extends IdentifiableEntity {
         }
     }
 
+    /**
+     * Checks if a given social security number (SSN) is the same as the account holder's.
+     *
+     * @param ssn the social security number to be checked
+     * @return true if the given SSN matches the holder's, false otherwise
+     */
     protected boolean isSsnValid(String ssn){
         if(ssn == null || getHolder().getSsn() == null) return false;
 
